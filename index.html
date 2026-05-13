@@ -294,14 +294,14 @@ window.changeJobStatus=async(jobId,newStatus)=>{
   const archived=newStatus==='Placed'||newStatus==='Archive';
   j.job_status=newStatus;j.archived=archived;
   renderAll();
-  await dbUpsert('jobs',{id:jobId,job_status:newStatus,archived});
+  await dbUpsert('jobs',{...j,job_status:newStatus,archived});
 };
 
 window.changeCandStatus=async(candId,newStatus)=>{
   const c=candidates.find(x=>x.id===candId);if(!c)return;
   c.candidate_status=newStatus;
   renderAll();
-  await dbUpsert('candidates',{id:candId,candidate_status:newStatus});
+  await dbUpsert('candidates',{...c,candidate_status:newStatus});
   if(newStatus==='Placed'&&c.job_type==='Contract') await autoAddContractor(c);
 };
 
